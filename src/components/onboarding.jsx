@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom"
 
 const Onboarding = () => {
+    
     const navigate = useNavigate();
     return (
         <div className="flex flex-col items-center justify-center h-screen w-full bg-linear-to-br from-blue-400 to-blue-800">
