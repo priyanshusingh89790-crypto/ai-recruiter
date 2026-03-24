@@ -17,38 +17,47 @@ const Builder = () => {
   const userText = input.trim();
   if (!userText) return;
 
-  setLoading(true);
-
-  const aidata = await getAIProfile(userText);
-
-  if (!aidata) {
-    alert("AI failed, try again");
-    setLoading(false);
-    return;
-  }
-
   const newMessage = { text: userText, sender: "user" };
   setMessage((prev) => [...prev, newMessage]);
 
-  setRole(aidata.role);
-  setSkills(aidata.skills);
-  setSummary(aidata.summary);
-
-  const user = auth.currentUser;
-
-  if (user) {
-    await setDoc(doc(db, "users", user.uid), {
-      role: aidata.role,
-      skills: aidata.skills,
-      summary: aidata.summary,
-    });
-  }
-
-  setTimeout(() => {
-    navigate("/profile");
-  }, 2000);
-
   setInput("");
+
+  setTimeout(async () => {
+    setLoading(true);
+
+    try {
+      const aidata = await getAIProfile(userText);
+
+      if (!aidata) {
+        alert("AI failed, try again");
+        setLoading(false);
+        return;
+      }
+
+      setRole(aidata.role);
+      setSkills(aidata.skills);
+      setSummary(aidata.summary);
+
+      const user = auth.currentUser;
+
+      if (user) {
+        await setDoc(doc(db, "users", user.uid), {
+          role: aidata.role,
+          skills: aidata.skills,
+          summary: aidata.summary,
+        });
+      }
+
+      setTimeout(() => {
+        navigate("/profile");
+      }, 2000);
+
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+
+  }, 2000);
 };
   const user = auth.currentUser;
   const handleKeyDown = (e) => {
@@ -63,15 +72,15 @@ const Builder = () => {
       {loading && (
         <div className="absolute bg-blur-md backdrop-blur-md bg-white/10 z-10 h-screen w-screen flex items-center justify-center">
           {" "}
-          <p className="text-white font-semibold text-2xl">Loading...</p>
+          <p className="text-white font-semibold text-2xl flex flex-col gap-5">Analyzing your experience...<span className="text-white">Extracting skills...</span><span className="text-white">Generating profile...</span></p>
         </div>
       )}
       <div className="flex flex-col items-start justify-center rounded-lg p-8 gap-10 bg-blue-800 w-1/2 h-1/2">
         <div className="overflow-y-scroll scrollbar-hide w-full h-full gap-10 ">
           <h1 className=" border p-4 border-gray-300 rounded-t-2xl rounded-br-2xl mb-4 text-white w-fit ">
             {" "}
-            Hi 👋 Tell me about your experience, and I’ll build your
-            profile.{" "}
+            Hi 👋 I’ll generate your professional profile using AI.
+Tell me about your experience, skills, or role.
           </h1>
           {message.map((msg, index) => (
             <div key={index} className="flex items-end justify-end w-full mb-4">
