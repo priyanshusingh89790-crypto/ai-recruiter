@@ -2,14 +2,24 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
  import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/config";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase/config";
+import { updateProfile } from "firebase/auth";
 const Signup = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
 const signup = async (e) => {
     e.preventDefault();
   try {
-    const user = await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user =userCredential.user;
+    await updateProfile(user, {displayName: name});
+    await setDoc(doc(db, "users", user.uid), {
+        name,
+        email,
+    });
     console.log("User created:", user.user);
     navigate("/onboarding");
   } catch (error) {
@@ -27,6 +37,7 @@ const signup = async (e) => {
           <input
             type="text"
             placeholder="Name"
+            onChange={(e) => setName(e.target.value)}
             className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:border-blue-500 placeholder:text-gray-200 text-white bg-blue-700"
           />
           <input
@@ -41,7 +52,6 @@ const signup = async (e) => {
           />
           <button
             type="submit"
-            onClick={signup}
             className="bg-gray-200 hover:bg-gray-100 text-blue-900 font-bold rounded-md p-2 w-full cursor-pointer"
           >
             Signup

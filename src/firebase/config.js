@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-
+import { getFirestore } from "firebase/firestore";
 // Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyCuuTZXuMVX9HwBoEXxDB8nszZIt_zrxPY",
@@ -16,16 +16,13 @@ const app = initializeApp(firebaseConfig);
 
 // ✅ Then get auth using app
 export const auth = getAuth(app);
-console.log (auth)
-
+export const db = getFirestore(app);
 // (optional) export app if needed
 export default app;
 
 // Optional listener
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    console.log("Logged in:", user.uid);
   } else {
-    console.log("Logged out");
   }
 });

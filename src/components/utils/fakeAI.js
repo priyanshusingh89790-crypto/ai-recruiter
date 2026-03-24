@@ -1,15 +1,47 @@
-export const suggestSkills = (text) => {
-  const skill = text.toLowerCase();
+export const analyzeExperience = (text) => {
+  const t = text.toLowerCase();
 
-  if (skill.includes("react")) return ["React", "JavaScript", "Frontend", "typescript", "tailwind css", "html", "css", "git", "github"];
-  if (skill.includes("node")) return ["Node.js", "Backend", "express", "mongodb", "javascript", "typescript", "git", "github"];
-  if (skill.includes("python")) return ["Python", "Data", "pandas", "numpy", "scikit-learn", "tensorflow", "pytorch", "git", "github"];
-  if (skill.includes("java")) return ["Java", "Backend", "spring", "mysql", "javascript", "typescript", "git", "github"];
-  if (skill.includes("c++")) return ["C++", "Backend", "spring", "mysql", "javascript", "typescript", "git", "github"];
-  if (skill.includes("c")) return ["C", "Backend", "spring", "mysql", "javascript", "typescript", "git", "github"];
-  return ["Communication", "Problem Solving", "Teamwork", "Leadership", "Adaptability", "Time Management", "Critical Thinking", "Creativity", "Attention to Detail", "Organization"];
+  let role = "Developer";
+  let skills = [];
+
+  if (t.includes("frontend")) {
+    role = "Frontend Developer";
+    skills = ["React", "JavaScript", "HTML", "CSS", "Tailwind", "Git"];
+  }
+
+  else if (t.includes("backend")) {
+    role = "Backend Developer";
+    skills = ["Node.js", "Express", "MongoDB", "API", "Git"];
+  }
+  else if (t.includes("fullstack")) {
+    role = "Fullstack Developer";
+    skills = ["React", "Node.js", "Express", "MongoDB", "API", "Git"];
+  }
+
+  else if (t.includes("python")) {
+    role = "Python Developer";
+    skills = ["Python", "Pandas", "NumPy"];
+  } 
+  else if (t.includes("java")) {
+    role = "Java Developer";
+    skills = ["Java", "Spring", "MySQL", "Git"];
+  }
+  else if (t.includes("c++")) {
+    role = "C++ Developer";
+    skills = ["C++", "Spring", "MySQL", "Git"];
+  }
+  else if (t.includes("c")) {
+    role = "C Developer";
+    skills = ["C", "Spring", "MySQL", "Git"];
+  }
+
+  else {
+    skills = ["Communication", "Problem Solving"];
+  }
+
+  return { role, skills };
 };
 
-export const generateSummary = ({ skills, experience }) => {
-  return `Skilled in ${skills.join(", ")} with experience in ${experience}. Passionate developer.`;
+export const generateSummary = ({ role, skills }) => {
+  return `I am a ${role} with skills in ${skills.join(", ")}.`;
 };

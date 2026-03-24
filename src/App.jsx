@@ -3,17 +3,17 @@ import Login from "./components/login"
 import Onboarding from "./components/onboarding"
 import Builder from "./components/builder"
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
-
+import Profile from "./components/profile"
 const App = () => {
   return (
     <RouterProvider router={createBrowserRouter([
       {
         path: "/",
-        element: <Signup />
+        element: <Login />
       },
       {
-        path: "/login",
-        element: <Login />
+        path: "/signup",
+        element: <Signup />
       },
       {
         path: "/onboarding",
@@ -22,6 +22,10 @@ const App = () => {
       {
         path: "/builder",
         element: <Builder />
+      },
+      {
+        path: "/profile",
+        element: <Profile />
       }
     ])} />
   )
