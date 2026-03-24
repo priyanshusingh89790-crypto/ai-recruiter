@@ -59,7 +59,7 @@ const signup = async (e) => {
         </form>
         <p className="text-white mt-4">
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-400">
+          <Link to="/" className="text-blue-400">
             Login
           </Link>
         </p>
